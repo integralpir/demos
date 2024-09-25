@@ -1,0 +1,30 @@
+app:
+  name: circuit-breaker
+
+spring:
+  application:
+    name: ${app.name}
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 4
+        waitDurationInOpenState: 5000
+        slowCallDurationThreshold: 2000
+    instances:
+      myCircuitBreaker:
+        baseConfig: default
+  retry:
+    configs:
+      default:
+        maxAttempts: 5
+        waitDuration: 2s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 3
+    instances:
+      myRetry:
+        baseConfig: default
+

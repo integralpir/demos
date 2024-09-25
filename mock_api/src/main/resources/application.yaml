@@ -1,0 +1,9 @@
+app:
+  name: mock_api
+
+spring:
+  application:
+    name: ${app.name}
+
+server:
+  port: 8090
