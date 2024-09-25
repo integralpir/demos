@@ -1,0 +1,22 @@
+# root
+.idea
+
+# circuit-breaker
+circuit-breaker/.idea
+circuit-breaker/*.iws
+circuit-breaker/*.iml
+circuit-breaker/*.ipr
+circuit-breaker/target/
+circuit-breaker/.mvn/wrapper/maven-wrapper.jar
+circuit-breaker/src/main/**/target/
+circuit-breaker/src/test/**/target/
+
+# mock_api
+mock_api/.idea
+mock_api/*.iws
+mock_api/*.iml
+mock_api/*.ipr
+mock_api/target/
+mock_api/.mvn/wrapper/maven-wrapper.jar
+mock_api/src/main/**/target/
+mock_api/src/test/**/target/
