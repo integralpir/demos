@@ -20,3 +20,13 @@ mock_api/target/
 mock_api/.mvn/wrapper/maven-wrapper.jar
 mock_api/src/main/**/target/
 mock_api/src/test/**/target/
+
+# mongo-db-example
+mongo-db-example/.idea
+mongo-db-example/*.iws
+mongo-db-example/*.iml
+mongo-db-example/*.ipr
+mongo-db-example/target/
+mongo-db-example/.mvn/wrapper/maven-wrapper.jar
+mongo-db-example/src/main/**/target/
+mongo-db-example/src/test/**/target/
