@@ -18,16 +18,21 @@ public class CBAppController {
 
     @GetMapping(value = "testMessage")
     public ResponseEntity<MockApiResponse> getTestMessage() {
-        return new ResponseEntity<>(new MockApiResponse(service.normalRequest()), HttpStatus.OK);
+        return new ResponseEntity<>(service.normalRequest(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "testError")
-    public ResponseEntity<MockApiResponse> getTestError() {
-        return new ResponseEntity<>(new MockApiResponse(service.errorRequest()), HttpStatus.OK);
+    @GetMapping(value = "testErrorEscape")
+    public ResponseEntity<MockApiResponse> getTestErrorEscape() {
+        return new ResponseEntity<>(service.errorRequestEscape(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "testErrorRead")
+    public ResponseEntity<MockApiResponse> getTestErrorRead() {
+        return new ResponseEntity<>(service.errorRequestRead(), HttpStatus.OK);
     }
 
     @GetMapping(value = "testTimeout")
     public ResponseEntity<MockApiResponse> getTestTimeout() {
-        return new ResponseEntity<>(new MockApiResponse(service.timeOutRequest()), HttpStatus.OK);
+        return new ResponseEntity<>(service.timeOutRequest(), HttpStatus.OK);
     }
 }

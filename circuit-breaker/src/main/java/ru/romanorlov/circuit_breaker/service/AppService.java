@@ -3,6 +3,7 @@ package ru.romanorlov.circuit_breaker.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.romanorlov.circuit_breaker.integration.MockApiIntegration;
+import ru.romanorlov.circuit_breaker.model.MockApiResponse;
 
 import java.util.UUID;
 
@@ -12,15 +13,19 @@ public class AppService {
 
     private final MockApiIntegration integration;
 
-    public String normalRequest() {
-        return integration.getTestMessage().message();
+    public MockApiResponse normalRequest() {
+        return integration.getTestMessage();
     }
 
-    public String errorRequest() {
-        return integration.getTestError().message();
+    public MockApiResponse errorRequestEscape() {
+        return integration.getTestErrorEscape();
     }
 
-    public String timeOutRequest() {
-        return integration.getTestTimeout(UUID.randomUUID().toString()).message();
+    public MockApiResponse errorRequestRead() {
+        return integration.getTestErrorRead();
+    }
+
+    public MockApiResponse timeOutRequest() {
+        return integration.getTestTimeout(UUID.randomUUID().toString());
     }
 }

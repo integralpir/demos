@@ -1,4 +1,5 @@
 package ru.romanorlov.mock_api.model;
 
-public record MockApiRequest(String message) {
+public record MockApiRequest(String status,
+                             String message) {
 }

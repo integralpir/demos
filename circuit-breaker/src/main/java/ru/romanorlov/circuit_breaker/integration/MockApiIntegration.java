@@ -5,6 +5,8 @@ import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.romanorlov.circuit_breaker.exception.BadGatewayException;
+import ru.romanorlov.circuit_breaker.exception.UnhandledException;
 import ru.romanorlov.circuit_breaker.integration.client.WebClientCall;
 import ru.romanorlov.circuit_breaker.model.MockApiResponse;
 
@@ -24,13 +26,39 @@ public class MockApiIntegration {
                 .block();
     }
 
+    @Retry(name = "myRetry", fallbackMethod = "fallbackCustomExceptionRetry")
+    //@CircuitBreaker(name = "myCircuitBreaker", fallbackMethod = "fallback")
+    public MockApiResponse getTestErrorEscape() {
+        log.info("call integration error escape");
+        MockApiResponse response = webClientCall
+                .callWebClient("testErrorEscape")
+                .block();
+
+        if (response != null) {
+            log.info("Response status: {}, message: {}", response.status(), response.message());
+        }
+
+        return response;
+    }
+
     @Retry(name = "myRetry", fallbackMethod = "fallbackRetry")
     //@CircuitBreaker(name = "myCircuitBreaker", fallbackMethod = "fallback")
-    public MockApiResponse getTestError() {
-        log.info("call integration error");
-        return webClientCall
-                .callWebClient("testError")
-                .block();
+    public MockApiResponse getTestErrorRead() {
+        log.info("call integration error read");
+        MockApiResponse response;
+        try {
+            response = webClientCall
+                    .callWebClient("testErrorRead")
+                    .block();
+        } catch (BadGatewayException e) {
+            response = new MockApiResponse(e.getStatus(), e.getMessage());
+        }
+
+        if (response != null) {
+            log.info("Response status: {}, message: {}", response.status(), response.message());
+        }
+
+        return response;
     }
 
     @CircuitBreaker(name = "myCircuitBreaker", fallbackMethod = "fallbackTimeout")
@@ -41,21 +69,27 @@ public class MockApiIntegration {
                 .block();
     }
 
+    private MockApiResponse fallbackCustomExceptionRetry(UnhandledException exception) {
+        log.error("fallback retry, status {}, message {}", exception.getCode(), exception.getMessage());
+
+        return new MockApiResponse(exception.getCode(), exception.getMessage());
+    }
+
     private MockApiResponse fallbackRetry(Exception ex) {
         log.error("fallback retry, {}", ex.getMessage());
 
-        return new MockApiResponse("ERROR MESSAGE RETRY");
+        return new MockApiResponse("FALLBACK", "ERROR MESSAGE RETRY");
     }
 
     private MockApiResponse fallbackTimeout(String uuid, Exception ex) {
         log.error("fallback timeout: {}, {}",  uuid, ex.getMessage());
 
-        return new MockApiResponse("ERROR MESSAGE RETRY");
+        return new MockApiResponse("FALLBACK", "ERROR MESSAGE RETRY");
     }
 
     private MockApiResponse fallback(Exception ex) {
         log.error("fallback method, {}", ex.getMessage());
 
-        return new MockApiResponse("ERROR MESSAGE");
+        return new MockApiResponse("FALLBACK", "ERROR MESSAGE");
     }
 }

@@ -24,6 +24,8 @@ resilience4j:
         waitDuration: 2s
         enableExponentialBackoff: true
         exponentialBackoffMultiplier: 3
+        ignoreExceptions:
+          - ru.romanorlov.circuit_breaker.exception.BadGatewayException
     instances:
       myRetry:
         baseConfig: default

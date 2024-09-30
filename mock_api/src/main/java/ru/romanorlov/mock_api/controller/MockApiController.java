@@ -13,12 +13,17 @@ public class MockApiController {
 
     @GetMapping(value = "testMessage")
     public ResponseEntity<MockApiRequest> getTestMessage() {
-        return new ResponseEntity<>(new MockApiRequest("TEST MESSAGE"), HttpStatus.OK);
+        return new ResponseEntity<>(new MockApiRequest("READ", "TEST MESSAGE"), HttpStatus.OK);
     }
 
-    @GetMapping(value = "testError")
-    public ResponseEntity<MockApiRequest> getError() {
-        return new ResponseEntity<>(new MockApiRequest("ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping(value = "testErrorRead")
+    public ResponseEntity<MockApiRequest> getErrorRead() {
+        return new ResponseEntity<>(new MockApiRequest("READ", "ERROR READ"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping(value = "testErrorEscape")
+    public ResponseEntity<MockApiRequest> getErrorEscape() {
+        return new ResponseEntity<>(new MockApiRequest("ESCAPE", "ERROR ESCAPE"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping(value = "testTimeout")
@@ -28,7 +33,7 @@ public class MockApiController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(new MockApiRequest("TIMEOUT"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new MockApiRequest("ESCAPE", "TIMEOUT"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
